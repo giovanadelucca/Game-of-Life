@@ -1,15 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-Criado on 04/01/2015
-@author: Nicoli Araújo
-@author: Elloá B. Guedes
-Módulo que abriga as classes que salvam os estados de um autômato celular em uma imagem de extensão .png 
-composta de pixels com tons que vão do preto ao branco ou um arquivo de texto composto de números inteiros.
-    - AutomataImage gera imagem.
-    - AutomataText gera um arquivo texto.
-"""
-
 from __future__ import unicode_literals
 from BiOuterTotalisticCode import BiOuterTotalisticCode
 from numpy import zeros
@@ -162,8 +152,7 @@ if __name__ == "__main__":
                 if(texto[j]!='\t'):
                     linha.append(int(texto[j]))
         mat.append(linha)
-    print(mat)
-    print(texto)
+        
     totalistic =  BiOuterTotalisticCode(9,224)
     AutomataBiImage(mat,50,100,totalistic,'30P5H2V0 (os)','/home/projeto/Música/Testes')
     
