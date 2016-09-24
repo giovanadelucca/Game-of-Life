@@ -136,15 +136,11 @@ if __name__ == "__main__":
     arq.close()
     mat = []
     taml = int((len(texto)+1)/(texto.count('\n')+1))
-    print(len(texto))
-    print(texto.count('\n'))
     k = taml
-    print(k)
     x = 0
     for i in range (texto.count('\n')):
         linha = []
         for j in range(x,k):
-            print(str(x)+' '+str(k)+'\n')
             if(texto[j]=='\n'):
                 x = k
                 k+=taml
