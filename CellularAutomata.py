@@ -5,9 +5,7 @@ from __future__ import unicode_literals
 from IntKBase import IntKBase
 
 class CellularAutomata(object):
-
     def __init__(self, neighborhood, rule):
-        
         self.__neighborhood = neighborhood
         self.__rule = rule
         self.__k = 2
@@ -15,14 +13,12 @@ class CellularAutomata(object):
         self.__dictRule = self.setDictRule(self.neighborhood, self.rule, self.k)
         
     def setDictRule(self, neighborhood, rule, k):
-        
         ruleInKBase = IntKBase(rule, k).numInBase
-        self.__dictRule = {}
         numComb = self.k**neighborhood
         if (len(ruleInKBase) < numComb):
             while (len(ruleInKBase) < numComb):
                 ruleInKBase = "0" + ruleInKBase 
-        
+        self.__dictRule = {}
         i = numComb-1
         for d in ruleInKBase:
             self.__dictRule[i] = int(d)
@@ -30,7 +26,6 @@ class CellularAutomata(object):
         return self.__dictRule
         
     def getState(self, chave):
-        
         return self.dictRule[chave]
     
     @property
