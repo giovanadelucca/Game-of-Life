@@ -1,16 +1,24 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+'''
+Created on Oct 1, 2016
+
+@author: Nicoli
+'''
+
 from collections import OrderedDict
 import pygame
 import pygame,random
 from pygame.locals import *
-#!/usr/bin/env python 
-# -*- coding: utf-8 -*-
+
+
 speed = 10 # how many iterations per second
 
 #TAMANHO DOS QUADRADINHOS(CELULAS)
 squares = 1 # size of squares: 0 = 8X8, 1 = 16X16, 2 = 32X32, 3 = 64X64
 
 #TAMANHO DA MATRIZ 
-map_size = 16 # the width and height
+map_size = 4 # the width and height
 
 #IMAGEM QUE REPRESENTA CADA CELULA MORTA DE ACORDO COM SEU TAMANHO
 if squares == 0:
@@ -87,7 +95,7 @@ class board:
         except Exception: pass
         try: a.append(mapa[abs(cell_loc[0]+1)][abs(cell_loc[1]+1)].location)
         except Exception: pass
-        num = len(list(OrderedDict.fromkeys(a)))# removes duplicates
+        #num = len(list(OrderedDict.fromkeys(a)))# removes duplicates
         for i in range(len(a)): b.append(mapa[a[i][0]][a[i][1]].alive)
         for i in b:# c houses how many cells are alive around it
             if i == True: c+=1
@@ -96,7 +104,7 @@ class board:
             if c > 3:cell.to_be = False
         else:
             if c == 3: cell.to_be = True
-                              #rules
+    #rules
     def update_frame(self):
         for i in range(map_size):
             for g in range(map_size):
@@ -131,7 +139,7 @@ board.draw()
 tp = 0
 run = False
 mat = []
-arq = open('saida.txt','w')
+file = open('saida.txt','w')
 
 for k in range(map_size):
     aux = []
@@ -205,10 +213,12 @@ while done == False:
                 p = True
         if p:
             #print(mat)
-            esc=str(mat)
+            esc=str(mat) + '\n'
             #===================================================================
+            #� aqui onde ocorre o print do frame.
+            #criar objeto que vai procurar as imgs dentro dessa imgzinha
             print(esc)
-            arq.write(esc)
+            file.write(esc)
             #===================================================================
 
         board.update_frame()
@@ -235,4 +245,4 @@ while done == False:
                     board.update()
 
     pygame.display.flip()
-arq.close
+file.close()
