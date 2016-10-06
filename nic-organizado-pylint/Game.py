@@ -78,7 +78,7 @@ class Cell:
         self._location = location
 
 class Board:
-    '''Maniputa tudo que tem a ver com o quadro do jogo
+    '''Manipula tudo que tem a ver com o quadro do jogo
     '''
 
     def __init__(self, squares, map_size, start_value):
@@ -275,7 +275,8 @@ class Board:
             for column in range(self.map_size):
                 cell = self.map[line][column]
                 self.get_cells(cell)
-                self.parser.set_mat_cell(self.map, line, column)
+                #self.parser.set_mat_cell(self.map, line, column)
+
 
     def update(self):
         '''doc
@@ -292,6 +293,8 @@ class Board:
                 else:
                     self.screen.blit(self.dead_img, (loc[0]*size, loc[1]*size))
                 cell.to_be = None
+        self.parser.mat = self.map
+        self.parser.save_mat()
 
     def set_board(self, speed):
         '''doc
@@ -335,7 +338,7 @@ class Board:
                 self.update()
 
             if pressed[K_KP2]:
-                self.parser.set_mat(self.map)
+                self.parser.mat = self.map
 
 
             if pressed[K_r]:
@@ -350,9 +353,10 @@ class Board:
 
             if run is True and t_p >= 1000/speed:
                 t_p = 0
-                self.parser.save_mat()
+                
                 self.update_frame()
                 self.update()
+                #self.parser.save_mat()
 
             if mouse[0]:# makes Cells alive
                 rects = self.get_cell_list()
@@ -362,7 +366,7 @@ class Board:
                             if pos[1] >= rects[line][col][1] and pos[1] < rects[line][col][1]+size:
                                 if self.map[line][col].pressed is False:
                                     self.map[line][col].alive = True
-                                    self.parser.set_cell(line, col, 1)
+                                    #self.parser.set_cell(line, col, 1)
                                     self.map[line][col].pressed = True
                                     self.update()
 
@@ -375,7 +379,7 @@ class Board:
                                 if self.map[line][col].pressed is False:
                                     self.map[line][col].alive = False
                                     self.map[line][col].pressed = False
-                                    self.parser.set_cell(line, col, 0)
+                                    #self.parser.set_cell(line, col, 0)
                                     self.update()
 
             pygame.display.flip()

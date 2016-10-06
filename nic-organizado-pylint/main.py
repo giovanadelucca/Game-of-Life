@@ -7,7 +7,8 @@ Módulo Main:
 #import pygame, random
 #from pygame.locals import *
 from Game import Board
-from PatternsParser import Patterns, FromImgToCSV
+from PatternsParser import FromImgToCSV
+from Patterns import Patterns
 #from PatternsParser import Patterns
 
 if __name__ == '__main__':
