@@ -140,6 +140,7 @@ class FromImgToCSV():
             for pattern in self.pattern_image_dict:
                 count_pattern = 0
                 for pattern_version in self.pattern_image_dict[pattern]:
+                    
                     result = cv2.matchTemplate(self.game_of_life_video[frame], pattern_version, cv2.TM_CCOEFF_NORMED)
                     threshold = 1
                     result = np.where(result >= threshold)
