@@ -275,7 +275,8 @@ class Board:
             for column in range(self.map_size):
                 cell = self.map[line][column]
                 self.get_cells(cell)
-                #self.parser.set_mat_cell(self.map, line, column)
+                #
+        self.parser.update_mat(self.map)
 
 
     def update(self):
@@ -294,7 +295,9 @@ class Board:
                     self.screen.blit(self.dead_img, (loc[0]*size, loc[1]*size))
                 cell.to_be = None
         self.parser.mat = self.map
-        self.parser.save_mat()
+        #print(self.parser.mat)
+        #print(self.map)
+   
 
     def set_board(self, speed):
         '''doc
@@ -312,51 +315,58 @@ class Board:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     done = True
+                    #self.parser.save_mat()
 
                 if event.type == KEYDOWN:
                     if event.key == K_SPACE:
                         run = not run
+
 
                 if event.type == KEYUP:
                     if event.key == K_q:
                         run = False
                         self.update_frame()
                         self.update()
-
+                        
+                #se apertar pra cima, fica limpo
                 if event.type == MOUSEBUTTONUP:
                     for line in range(self.map_size):
                         for column in range(self.map_size):
                             self.map[line][column].pressed = False
+                            #self.parser.update_mat(self.map)
 
 
             pressed = pygame.key.get_pressed()
             mouse = pygame.mouse.get_pressed()
             pos = pygame.mouse.get_pos()
 
-            if pressed[K_KP0]:
+            if pressed[K_KP0]: #se 0 for apertado, a célula 0 0 fica viva
                 self.map[0][0].alive = True
+                self.parser.mat = self.map
+                self.parser.set_mat()
                 self.update()
 
-            if pressed[K_KP2]:
+            if pressed[K_KP2]: #se apertar 2, salva a matriz
                 self.parser.mat = self.map
+                #self.parser.update_mat()
 
-
-            if pressed[K_r]:
+            '''if pressed[K_r]: #se apertar o r, reinicia a tela com false
                 self.map = []
                 self.fill(False)
                 self.draw()
+                
 
-            if pressed[K_a]:
+            if pressed[K_a]: #se apertar o a, reinicia a tela com true
                 self.map = []
                 self.fill(True)
                 self.draw()
-
+'''
             if run is True and t_p >= 1000/speed:
                 t_p = 0
                 
                 self.update_frame()
                 self.update()
-                #self.parser.save_mat()
+                #self.parser.update()
 
             if mouse[0]:# makes Cells alive
                 rects = self.get_cell_list()
@@ -379,9 +389,9 @@ class Board:
                                 if self.map[line][col].pressed is False:
                                     self.map[line][col].alive = False
                                     self.map[line][col].pressed = False
-                                    #self.parser.set_cell(line, col, 0)
+                                    self.parser.set_cell(line, col, 0)
                                     self.update()
-
+            
             pygame.display.flip()
 
     def get_cell_list(self):

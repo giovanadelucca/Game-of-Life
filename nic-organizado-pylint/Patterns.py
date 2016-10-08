@@ -27,23 +27,40 @@ class Patterns():
                             'SHIP': 2,
                             'TOAD': 2,
                             'TUB': 1}
+        self.patterns_rotated = {}
 
     def rotate_patterns(self):
+        #print(self.patterns)
         for pattern_name in self.patterns:
-            #if pattern_name in rotate_list:
+            
             pattern = self.patterns[pattern_name]
+            #print(pattern_name, type(pattern))
+            #print(len(pattern))
+            #print(pattern)
             pattern_rot = self.rotate_dict[pattern_name]
-            self.patterns[pattern_name] = [np.rot90(pattern, k) for k in range(pattern_rot)]
+            self.patterns_rotated[pattern_name] = [np.rot90(pattern, k) for k in range(pattern_rot)]
             if pattern_name == 'TOAD':
-                self.patterns[pattern_name].append(np.rot90(pattern.T, 0))
-                self.patterns[pattern_name].append(np.rot90(pattern.T, 1))
+                self.patterns_rotated[pattern_name].append(np.rot90(pattern.T, 0))
+                self.patterns_rotated[pattern_name].append(np.rot90(pattern.T, 1))
+    
+    def patterns_array_to_txt(self, start_value):
+        self.rotate_patterns()
+        #print(self.patterns_rotated)
+        for pattern in self.patterns_rotated:
+            for rot in range(len(self.patterns_rotated[pattern])):
+                if str(start_value) == 'True':
+                    txtpath = 'data/patterns/txt/True/'+pattern+str(rot) +'.txt'
+                elif str(start_value) == 'False':
+                    txtpath = 'data/patterns/txt/False/'+pattern+str(rot) +'.txt'
+                print(pattern, rot)
+                np.savetxt(txtpath, self.patterns_rotated[pattern][rot], fmt='%.18g', delimiter=' ', newline='\n')
 
     def patterns_array_to_image(self):
         '''doc'''
         self.rotate_patterns()
         for pattern in self.patterns:
             for pos in enumerate(self.patterns[pattern]):
-                img_path = 'data/patterns/'+pattern+str(pos[0]) +'.png'
+                img_path = 'data/patterns/imgs/'+pattern+str(pos[0]) +'.png'
                 self.array_to_image(self.patterns[pattern][pos[0]], img_path)
 
     def array_to_image(self, image_array, filename):
@@ -97,7 +114,7 @@ class Patterns():
 
         self._patterns['BEEHIVE'][1][2:4] = self._patterns['BEEHIVE'][2][1] = not start_value
         self._patterns['BEEHIVE'][3][2:4] = self._patterns['BEEHIVE'][2][4] = not start_value
-
+        
         self._patterns['BARGE'][1][2] = self._patterns['BARGE'][2][1] = not start_value
         self._patterns['BARGE'][2][3] = self._patterns['BARGE'][3][2] = not start_value
         self._patterns['BARGE'][3][4] = self._patterns['BARGE'][4][3] = not start_value
@@ -131,6 +148,7 @@ class Patterns():
         self._patterns['HALF_FLEET'][3][2:4] = self._patterns['HALF_FLEET'][2][3] = not start_value
         self._patterns['HALF_FLEET'][4][4:6] = self._patterns['HALF_FLEET'][5][4] = not start_value
         self._patterns['HALF_FLEET'][6][5:7] = self._patterns['HALF_FLEET'][5][6] = not start_value
+        print('HALF FLEET: ',self._patterns['HALF_FLEET'], type(self._patterns['HALF_FLEET']))
 
         self._patterns['HALF_BAKERY'][1][2:4] = not start_value
         self._patterns['HALF_BAKERY'][2][1] = not start_value

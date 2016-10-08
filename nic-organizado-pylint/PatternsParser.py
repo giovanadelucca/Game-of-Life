@@ -12,7 +12,6 @@ Nicoli
 '''
 import cv2
 import numpy as np
-from PIL import Image
 import pandas as pd
 
 class GameArrayParser():
@@ -67,7 +66,7 @@ class GameArrayParser():
 
     def save_mat(self):
         '''doc'''
-        value = self.dead
+        '''value = self.dead
         for i in range(self.map_size):
             if self.alive in self.mat[i] :
                 value = True
@@ -76,32 +75,47 @@ class GameArrayParser():
             self.mat_video.append(self.mat)
             #print(self.mat_str)
             with open('saida.txt', 'a') as self.file_txt:
-                self.file_txt.write(self.mat_str)
+                self.file_txt.write(self.mat_str)'''
+        self.mat_video.append(self.mat)
         
-
+    def update_mat(self, from_pygame):
+        self.mat = from_pygame
+        self.mat_video.append(self.mat)
+        
 class FromImgToCSV():
     '''Classe que pega o array dado, transforma em imagem do tipo OpenCV e conta padrões
     '''
-    def __init__(self, pattern_dict, game_of_life):
-        #print(game_of_life)
+    def __init__(self, start_value, patterns, game_of_life):
+
+        self.pattern_array_dict = self.start_pattern_dict_array(patterns, start_value)
         self.game_of_life_video = self.start_game_of_life_video(game_of_life)
-        self.start_pattern_count_dict(pattern_dict, len(game_of_life[0]))
-        #self.pattern_count_dict = pattern_dict
+
         self.game_of_life_array = game_of_life
-        self.pattern_image_dict = self.start_pattern_image_dict(pattern_dict)
+        self.pattern_image_dict = self.start_pattern_image_dict(self.pattern_array_dict)
         index_list = [i for i in range(0, len(self.game_of_life_array))]
-        #print(index_list, len(self.game_of_life))
+
         empty_array = np.zeros(len(self.game_of_life_array))
         new_pattern_dict = {key: empty_array for key in self.pattern_image_dict}
-        #print(new_pattern_dict)
+
         self.pattern_df = pd.DataFrame(new_pattern_dict, index = index_list)
-
-    def start_pattern_count_dict(self, pattern_dict, size):
-        self.pattern_count_dict = {}
-        for key in pattern_dict:
-            self.pattern_count_dict[key] = np.full([size], 0, np.int32)
-
     
+    def start_pattern_dict_array(self, patterns, start_value):
+        pattern_dict_array = {}
+        for p in patterns:
+            pattern_dict_array[p] = []
+            for rot in range(4):
+                try:
+                    if str(start_value) == 'True':
+                        txtpath = 'data/patterns/txt/True/'+p+str(rot) +'.txt'
+                    elif str(start_value) == 'False':
+                        txtpath = 'data/patterns/txt/False/'+p+str(rot) +'.txt'
+                    #print(p, rot)
+                    pattern_dict_array[p].append(np.loadtxt(txtpath, delimiter=' '))
+                except FileNotFoundError:
+                    pass
+        #print(pattern_dict_array)
+        return pattern_dict_array
+
     def start_game_of_life_video(self, game_of_life_array):
         game_of_life_video = []
         for frame in game_of_life_array:
@@ -125,13 +139,10 @@ class FromImgToCSV():
         for frame in range(0, len(self.game_of_life_video)):
             for pattern in self.pattern_image_dict:
                 count_pattern = 0
-                #print(pattern)
                 for pattern_version in self.pattern_image_dict[pattern]:
                     result = cv2.matchTemplate(self.game_of_life_video[frame], pattern_version, cv2.TM_CCOEFF_NORMED)
                     threshold = 1
                     result = np.where(result >= threshold)
                     count_pattern += len(result[1])
-                    #print ('loc:', len(loc[1]))
-                print(self.pattern_count_dict[pattern][frame], pattern, frame)
-                self.pattern_count_dict[pattern][frame] = count_pattern
-                print(self.pattern_count_dict)
+                self.pattern_df[pattern][frame] = count_pattern
+        print(self.pattern_df)
