@@ -1,4 +1,8 @@
 eclipse.preferences.version=1
+encoding//nic-organizado-pylint/Game.py=utf-8
+encoding//nic-organizado-pylint/Patterns.py=utf-8
+encoding//nic-organizado-pylint/PatternsParser.py=utf-8
+encoding//nic-organizado-pylint/main.py=utf-8
 encoding/AutomataBiImage.py=utf-8
 encoding/CellularAutomata.py=utf-8
 encoding/IntKBase.py=utf-8

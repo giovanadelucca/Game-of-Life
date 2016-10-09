@@ -186,7 +186,7 @@ class Board:
         self._screen = pygame.display.set_mode(screen_size)
 
     def fill(self, rand_bool):
-        '''dfjsa
+        '''DOCUMENTAR
         '''
         for line in range(self.map_size):
             self.map.append([])
@@ -200,7 +200,7 @@ class Board:
                 else: self.map[line].insert(column, Cell((line, column)))
 
     def draw(self):
-        '''doc
+        '''DOCUMENTAR
         '''
 
         for line in range(self.map_size):
@@ -214,8 +214,7 @@ class Board:
                     self.screen.blit(self.dead_img, (loc[0]*size, loc[1]*size))
 
     def get_cells(self, cell):# gets the Cells around a Cell
-        '''method doc
-        '''
+        '''Regra do autômato'''
         mapa = self.map
         list_a = []
         list_b = []
@@ -269,8 +268,7 @@ class Board:
             cell.to_be = True
 
     def update_frame(self):
-        '''doc
-        '''
+        '''DOCUMENTAR'''
         for line in range(self.map_size):
             for column in range(self.map_size):
                 cell = self.map[line][column]
@@ -280,7 +278,7 @@ class Board:
 
 
     def update(self):
-        '''doc
+        '''DOCUMENTAR
         '''
         for line in range(self.map_size):
             for column in range(self.map_size):
@@ -294,13 +292,14 @@ class Board:
                 else:
                     self.screen.blit(self.dead_img, (loc[0]*size, loc[1]*size))
                 cell.to_be = None
+        #self.parser.update_mat(self.map)
         self.parser.mat = self.map
         #print(self.parser.mat)
         #print(self.map)
    
 
     def set_board(self, speed):
-        '''doc
+        '''DOCUMENTAR
         '''
         clock = pygame.time.Clock()
         done = False
@@ -315,6 +314,7 @@ class Board:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     done = True
+                    
                     #self.parser.save_mat()
 
                 if event.type == KEYDOWN:
@@ -350,7 +350,7 @@ class Board:
                 self.parser.mat = self.map
                 #self.parser.update_mat()
 
-            '''if pressed[K_r]: #se apertar o r, reinicia a tela com false
+            if pressed[K_r]: #se apertar o r, reinicia a tela com false
                 self.map = []
                 self.fill(False)
                 self.draw()
@@ -360,7 +360,7 @@ class Board:
                 self.map = []
                 self.fill(True)
                 self.draw()
-'''
+
             if run is True and t_p >= 1000/speed:
                 t_p = 0
                 
@@ -395,7 +395,7 @@ class Board:
             pygame.display.flip()
 
     def get_cell_list(self):
-        '''doc
+        '''DOCUMENTAR
         '''
         cell_list = []
         size = self.cell_img[2]
