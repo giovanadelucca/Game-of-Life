@@ -43,7 +43,7 @@ class Estatistica(object):
         sns.savefig('data/files/graficos/'+ name + '.pdf')
 
     def get_data_frame(self, path):
-        return pd.read_csv(path, encoding = 'utf8', sep = ';') 
+        return pd.read_csv(path, encoding = 'utf8') 
 
     def __init__(self, name):
         path = 'data/files/csv/' + name

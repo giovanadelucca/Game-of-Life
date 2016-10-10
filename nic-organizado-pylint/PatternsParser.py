@@ -274,4 +274,4 @@ class FromImgToCSV():
         return amnt_matches 
     
     def save_csv(self, name):
-        self.pattern_df.to_csv('data/files/csv/'+ name, encoding = 'utf8', sep = ';')
+        self.pattern_df.to_csv('data/files/csv/'+ name, encoding = 'utf8')
