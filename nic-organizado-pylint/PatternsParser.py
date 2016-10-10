@@ -180,7 +180,7 @@ class FromImgToCSV():
                     #print(amnt_matches)
                     self.pattern_df[pattern][frame_number] += amnt_matches
         print(self.pattern_df)
-        self.pattern_df.to_csv('data/files/csv/teste.csv', encoding = 'utf8')
+        
 
     def get_amnt_matches(self, frame, pattern_image_version):
         #print(frame)
@@ -272,4 +272,6 @@ class FromImgToCSV():
         #cv2.imwrite('data/imgtest/' + pattern_name + str(k) +'_8.png',pattern_image_version_crop_8)
         
         return amnt_matches 
-        
+    
+    def save_csv(self, name):
+        self.pattern_df.to_csv('data/files/csv/'+ name, encoding = 'utf8', sep = ';')

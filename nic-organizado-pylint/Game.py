@@ -81,13 +81,15 @@ class Board:
     '''Manipula tudo que tem a ver com o quadro do jogo
     '''
 
-    def __init__(self, squares, map_size, start_value):
+    def __init__(self, squares, map_size, start_value, generations):
         '''
         squares: tamanho das células ==> 0 = 8X8, 1 = 16X16, 2 = 32X32, 3 = 64X64
         map: list [squares x squares] com os valores dos pixeis
         cell_img: lista que armazena o local de cada imagem que representará a célula
         viva, morta e quantos pixeis essa imagem terá
         '''
+        self.generations = generations
+        self.count_gen = 0
         self._map_size = map_size
         self.map = []
         self.cell_img = squares
@@ -269,6 +271,7 @@ class Board:
 
     def update_frame(self):
         '''DOCUMENTAR'''
+        self.count_gen+=1
         for line in range(self.map_size):
             for column in range(self.map_size):
                 cell = self.map[line][column]
@@ -361,7 +364,7 @@ class Board:
                 self.fill(True)
                 self.draw()
 
-            if run is True and t_p >= 1000/speed:
+            if run is True and t_p >= 1000/speed and self.count_gen<=self.generations:
                 t_p = 0
                 
                 self.update_frame()

@@ -173,7 +173,7 @@ class Patterns():
         self._patterns['HALF_FLEET'][3][2:4] = self._patterns['HALF_FLEET'][2][3] = not self.start_value
         self._patterns['HALF_FLEET'][4][4:6] = self._patterns['HALF_FLEET'][5][4] = not self.start_value
         self._patterns['HALF_FLEET'][6][5:7] = self._patterns['HALF_FLEET'][5][6] = not self.start_value
-        print('HALF FLEET: ',self._patterns['HALF_FLEET'], type(self._patterns['HALF_FLEET']))
+        #print('HALF FLEET: ',self._patterns['HALF_FLEET'], type(self._patterns['HALF_FLEET']))
 
         self._patterns['HALF_BAKERY'][1][2:4] = not self.start_value
         self._patterns['HALF_BAKERY'][2][1] = not self.start_value
