@@ -278,6 +278,9 @@ class Board:
                 self.get_cells(cell)
                 #
         self.parser.update_mat(self.map)
+        if self.generations == 35:
+            
+            .get_img_corr('BLINKER')
 
 
     def update(self):

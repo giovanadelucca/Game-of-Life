@@ -84,7 +84,13 @@ class GameArrayParser():
         #print(self.mat)
         #print('\n')
         self.mat_video.append(self.mat.copy())
-
+        
+        
+    def get_img_corr(self, pattern):
+        im = np.array(float_img * 255, dtype = np.uint8)
+        threshed = cv2.adaptiveThreshold(im, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 3, 0)
+        result = cv2.matchTemplate(self.mat, pattern, cv2.TM_CCOEFF_NORMED)
+    
 class FromImgToCSV():
     '''Classe que pega o array dado, transforma em imagem do tipo OpenCV e conta padrões
     '''
