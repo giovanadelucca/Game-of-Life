@@ -2,40 +2,38 @@ from collections import OrderedDict
 import pygame
 import pygame,random
 from pygame.locals import *
-#from win32api import GetSystemMetrics
 
-#width = GetSystemMetrics(0)
-#height = GetSystemMetrics(1)
 speed = 10 # how many iterations per second
 
-#TAMANHO DOS QUADRADINHOS(CELULAS)
-squares = 1 # size of squares: 0 = 8X8, 1 = 16X16, 2 = 32X32, 3 = 64X64
+# size of squares 
+square_size = 16 # width and height
 
-#infoObject = pygame.display.Info()
-#pygame.display.set_mode((infoObject.current_w, infoObject.current_h))
+# board size 
+board_size = 64 # width and height
 
-#TAMANHO DA MATRIZ 
-map_size = 2014 # the width and height
+# assets folder name
+assets_folder = 'assets/'
 
-#IMAGEM QUE REPRESENTA CADA CELULA MORTA DE ACORDO COM SEU TAMANHO
-if squares == 0:
-    imgs = ["res/alive_8.png","res/dead_8.png",8]
-if squares == 1:
-    imgs = ["res/alive_16.png","res/dead_16.png",16]
-if squares == 2:
-    imgs = ["res/alive_32.png","res/dead_32.png",32]
-if squares == 3:
-    imgs = ["res/alive_64.png","res/dead_64.png",64]
+# assets that represents each cell (alive and dead) by size
 
-#-----CONFIG-----
+assets_dictionary = {
+  8: (assets_folder + 'alive_08.png', assets_folder + 'dead_08.png'),
+  16: (assets_folder + 'alive_16.png', assets_folder + 'dead_16.png'),
+  32: (assets_folder + 'alive_32.png', assets_folder + 'dead_32.png'),
+  64: (assets_folder + 'alive_64.png', assets_folder + 'dead_64.png')
+}
 
-width = map_size*imgs[2]
-height = map_size*imgs[2]
-screen_size = width,height
+alive_image, dead_image = assets_dictionary[square_size]
+
+# configuration
+
+width = board_size*square_size
+height = board_size*square_size
+screen_size = width, height
 screen = pygame.display.set_mode(screen_size)
 clock = pygame.time.Clock()
-alive = pygame.image.load(imgs[0]).convert()
-dead = pygame.image.load(imgs[1]).convert()
+alive = pygame.image.load(alive_image).convert()
+dead = pygame.image.load(dead_image).convert()
 done = False
 
 class cell:
@@ -46,15 +44,16 @@ class cell:
         self.pressed = False
         self.location = location
 
+
 class board:
 
     def __init__(self):
         self.map = []
 
-    def fill(self,ran):
-        for i in range(map_size):
+    def fill(self, ran):
+        for i in range(board_size):
             self.map.append([])
-            for g in range(map_size):
+            for g in range(board_size):
                 if ran == True:
                     a = random.randint(0,4)
                     if a == 0: self.map[i].insert(g,cell((i,g),True))
@@ -63,12 +62,12 @@ class board:
                     
 
     def draw(self):
-        for i in range(map_size):
-            for g in range(map_size):
+        for i in range(board_size):
+            for g in range(board_size):
                 cell = self.map[i][g]
                 loc = cell.location
-                if cell.alive == True: screen.blit(alive,(loc[0]*imgs[2],loc[1]*imgs[2]))
-                else: screen.blit(dead,(loc[0]*imgs[2],loc[1]*imgs[2]))
+                if cell.alive == True: screen.blit(alive,(loc[0]*square_size,loc[1]*square_size))
+                else: screen.blit(dead,(loc[0]*square_size,loc[1]*square_size))
 
     def get_cells(self,cell):# gets the cells around a cell
         mapa = self.map
@@ -103,26 +102,26 @@ class board:
             if c == 3: cell.to_be = True
                               #rules
     def update_frame(self):
-        for i in range(map_size):
-            for g in range(map_size):
+        for i in range(board_size):
+            for g in range(board_size):
                 cell = self.map[i][g]
                 self.get_cells(cell)
 
     def update(self):
-        for i in range(map_size):
-            for g in range(map_size):
+        for i in range(board_size):
+            for g in range(board_size):
                 cell = self.map[i][g]
                 loc = cell.location
                 if cell.to_be != None: cell.alive = cell.to_be
-                if self.map[i][g].alive == True: screen.blit(alive,(loc[0]*imgs[2],loc[1]*imgs[2]))
-                else: screen.blit(dead,(loc[0]*imgs[2],loc[1]*imgs[2]))
+                if self.map[i][g].alive == True: screen.blit(alive,(loc[0]*square_size,loc[1]*square_size))
+                else: screen.blit(dead,(loc[0]*square_size,loc[1]*square_size))
                 cell.to_be = None
 
 def cell_list():
     lst = []
-    for i in range(map_size):
+    for i in range(board_size):
         lst.append([])
-        for g in range(map_size): lst[i].append((board.map[i][g].location[0]*imgs[2],board.map[i][g].location[1]*imgs[2]))
+        for g in range(board_size): lst[i].append((board.map[i][g].location[0]*square_size,board.map[i][g].location[1]*square_size))
     return lst
 
 ########################
@@ -152,8 +151,8 @@ while done == False:
                 board.update()
 
         if event.type == MOUSEBUTTONUP:
-            for i in range(map_size):
-                for g in range(map_size):
+            for i in range(board_size):
+                for g in range(board_size):
                     board.map[i][g].pressed = False
         
 
@@ -167,16 +166,14 @@ while done == False:
         
     if pressed[K_KP2]:
         mat = []
-        for i in range(map_size):
+        for i in range(board_size):
             aux = []
-            for j in range(map_size):
+            for j in range(board_size):
                 if(board.map[i][j].alive == False):
                     aux.append(0)
                 else:
                     aux.append(1)
             mat.append(aux)
-        print(mat)
-        print()
         
     if pressed[K_r]:
         board.map = []
@@ -193,20 +190,20 @@ while done == False:
         board.update_frame()
         board.update()
 
-    if mouse[0]:# makes cells alive
+    if mouse[0]: # makes cells alive
         rects = cell_list()
-        for i in range(map_size):
-            for g in range(map_size):
-                if pos[0] >= rects[i][g][0] and pos[0] < rects[i][g][0]+imgs[2] and pos[1] >= rects[i][g][1] and pos[1] < rects[i][g][1]+imgs[2] and board.map[i][g].pressed == False:
+        for i in range(board_size):
+            for g in range(board_size):
+                if pos[0] >= rects[i][g][0] and pos[0] < rects[i][g][0]+square_size and pos[1] >= rects[i][g][1] and pos[1] < rects[i][g][1]+square_size and board.map[i][g].pressed == False:
                     board.map[i][g].alive = True
                     board.map[i][g].pressed = True
                     board.update()
 
     if mouse[2]: # kills cells
         rects = cell_list()
-        for i in range(map_size):
-            for g in range(map_size):
-                if pos[0] >= rects[i][g][0] and pos[0] < rects[i][g][0]+imgs[2] and pos[1] >= rects[i][g][1] and pos[1] < rects[i][g][1]+imgs[2] and board.map[i][g].pressed == False:
+        for i in range(board_size):
+            for g in range(board_size):
+                if pos[0] >= rects[i][g][0] and pos[0] < rects[i][g][0]+square_size and pos[1] >= rects[i][g][1] and pos[1] < rects[i][g][1]+square_size and board.map[i][g].pressed == False:
                     board.map[i][g].alive = False
                     board.map[i][g].pressed = False
                     board.update()
